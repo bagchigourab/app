@@ -1,9 +1,4 @@
 import streamlit as st
-import os
-
-# Set environment variable to disable specific video I/O backends
-os.environ['OPENCV_VIDEOIO_PRIORITY_MSMF'] = '0'
-
 import cv2
 import requests
 import numpy as np
@@ -19,9 +14,7 @@ class VideoTransformer(VideoTransformerBase):
         self.frame_count = 0
         self.description = ""
         self.font = cv2.FONT_HERSHEY_SIMPLEX
-        self.cap = cv2.VideoCapture(0)
-        fps = int(self.cap.get(cv2.CAP_PROP_FPS))
-        self.process_every_n_frames = max(1, fps // 2)
+        self.process_every_n_frames = 15  # Process every 15 frames (adjust as needed)
 
     def get_description_from_api(self, frame):
         _, img_encoded = cv2.imencode('.jpg', frame)
