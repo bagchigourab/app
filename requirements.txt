@@ -1,7 +1,7 @@
-streamlit==1.25.0
-opencv-python-headless==4.5.5.64
-requests==2.31.0
-numpy==1.24.4
-mediapipe==0.9.4.1
-streamlit-webrtc==0.40.0
-Pillow==10.0.0
+streamlit
+opencv-python-headless
+requests
+numpy
+mediapipe
+streamlit-webrtc
+Pillow
