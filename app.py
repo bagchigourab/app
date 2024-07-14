@@ -14,9 +14,13 @@ class VideoProcessor(VideoTransformerBase):
         self.frame_count = 0
         self.description = ""
         self.font = cv2.FONT_HERSHEY_SIMPLEX
+        # Mock camera capture to avoid error in cloud environment
         self.cap = cv2.VideoCapture(0)
-        fps = int(self.cap.get(cv2.CAP_PROP_FPS))
-        self.process_every_n_frames = max(1, fps // 2)
+        if not self.cap.isOpened():
+            self.cap = None
+        else:
+            fps = int(self.cap.get(cv2.CAP_PROP_FPS))
+            self.process_every_n_frames = max(1, fps // 2)
 
     def get_description_from_api(self, frame):
         _, img_encoded = cv2.imencode('.jpg', frame)
@@ -46,7 +50,7 @@ class VideoProcessor(VideoTransformerBase):
     def transform(self, frame):
         img = frame.to_ndarray(format="bgr24")
 
-        if self.frame_count % self.process_every_n_frames == 0:
+        if self.cap is not None and self.frame_count % self.process_every_n_frames == 0:
             result = self.get_description_from_api(img)
             if result and 'error' not in result:
                 self.description = result.get("description", "")
