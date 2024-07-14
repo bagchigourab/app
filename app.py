@@ -1,4 +1,9 @@
 import streamlit as st
+import os
+
+# Set environment variable to disable specific video I/O backends
+os.environ['OPENCV_VIDEOIO_PRIORITY_MSMF'] = '0'
+
 import cv2
 import requests
 import numpy as np
