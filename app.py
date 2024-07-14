@@ -20,7 +20,7 @@ class VideoTransformer(VideoTransformerBase):
 
     def get_description_from_api(self, frame):
         _, img_encoded = cv2.imencode('.jpg', frame)
-        response = requests.post("https://9e2c-34-41-55-211.ngrok-free.app/process_frame/", files={"file": img_encoded.tobytes()})
+        response = requests.post("https://1b7d-35-232-35-31.ngrok-free.app/process_frame/", files={"file": img_encoded.tobytes()})
         if response.status_code == 200:
             return response.json()
         else:
