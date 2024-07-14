@@ -9,12 +9,14 @@ from streamlit_webrtc import VideoTransformerBase, webrtc_streamer
 mp_pose = mp.solutions.pose
 mp_drawing = mp.solutions.drawing_utils
 
-class VideoTransformer(VideoTransformerBase):
+class VideoProcessor(VideoTransformerBase):
     def __init__(self):
         self.frame_count = 0
         self.description = ""
         self.font = cv2.FONT_HERSHEY_SIMPLEX
-        self.process_every_n_frames = 15  # Process every 15 frames (adjust as needed)
+        self.cap = cv2.VideoCapture(0)
+        fps = int(self.cap.get(cv2.CAP_PROP_FPS))
+        self.process_every_n_frames = max(1, fps // 2)
 
     def get_description_from_api(self, frame):
         _, img_encoded = cv2.imencode('.jpg', frame)
@@ -109,4 +111,4 @@ class VideoTransformer(VideoTransformerBase):
 
 st.title("AuPair Vision Model")
 
-webrtc_streamer(key="example", video_transformer_factory=VideoTransformer)
+webrtc_streamer(key="example", video_processor_factory=VideoProcessor)
